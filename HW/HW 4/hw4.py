@@ -58,7 +58,29 @@ def check_html_tags(tag_list):
     print("Tag Consistency Results:", results)
 
 def dfa_ab_language(word):
-    return word.startswith("ab") or word.endswith("ab")
+    states = {
+        'start': {'a': 'state_a', 'b': 'reject'}, 
+        'state_a': {'a': 'reject', 'b': 'accept_start'},  
+        'before_last': {'a': 'before_last_a', 'b': 'accept_end'},  
+        'before_last_a': {'a': 'reject', 'b': 'accept_end'},
+    }
+
+    current_state = 'start'
+    
+    for char in word:
+        if current_state == 'accept_start': 
+            continue
+        elif current_state in states and char in states[current_state]:
+            current_state = states[current_state][char]
+        else:
+            current_state = 'reject'
+            break
+    
+    if len(word) >= 2 and word[-2:] == "ab":
+        current_state = 'accept_end'
+    
+    # Determine acceptance
+    return current_state in ('accept_start', 'accept_end')
 
 def check_dfa_examples(words):
     results = {word: dfa_ab_language(word) for word in words}
@@ -72,7 +94,7 @@ def main():
     tags = ["<p>", "< p >", "<p/>", "< /p>", "< id >", "<p>"]
     check_html_tags(tags)
 
-    words = ["abaa", "aabab", "aabba", "ab", "abab"]
+    words = ["abaa", "aabab", "aabba", "ab", "abab", "aabb"]
     check_dfa_examples(words)
 
 if __name__ == "__main__":
