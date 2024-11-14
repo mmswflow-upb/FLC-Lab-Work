@@ -38,9 +38,10 @@ fig.suptitle("Exercise 7 - 3x2 Subplot")
 
 # 7.1 Line with custom marker color for points
 x = np.linspace(0, 2, 10)
-y = x**2
+y = x  # Linear relationship for a straight line
 axs[0, 0].plot(x, y, marker='o', color='blue', markerfacecolor='magenta')
 axs[0, 0].set_title("Line with Custom Marker Color")
+
 
 # 7.2 Line with custom style and grid
 x = np.linspace(0, 10, 10)
@@ -84,7 +85,8 @@ plt.show()
 # Exercise 8: Create a plot with intersecting lines of different colors
 x = np.arange(1, 10)
 y1 = x + 1
-y2 = x - 1
+y2 = 11 - x  # Adjusted y2 to ensure an intersection
+
 plt.figure()
 plt.plot(x, y1, color='cyan', label="Line 1")
 plt.plot(x, y2, color='magenta', label="Line 2")
@@ -92,11 +94,14 @@ plt.title("Exercise 8 - Intersecting Lines")
 plt.legend()
 plt.show()
 
-# Exercise 9: Create a pie chart with 5 items of custom colors and shadow
+
+# Alternative Pie Chart with 5 items of custom colors and shadow
 labels = ['A', 'B', 'C', 'D', 'E']
-sizes = [15, 30, 25, 20, 10]
-colors = ['yellow', 'orange', 'blue', 'green', 'red']
+sizes = [10, 20, 30, 25, 15]
+colors = ['purple', 'cyan', 'lime', 'pink', 'grey']  # Different color palette
+explode = (0, 0.1, 0, 0, 0.1)  # Emphasize segments B and E
+
 plt.figure()
-plt.pie(sizes, labels=labels, colors=colors, shadow=True, startangle=140, autopct='%1.1f%%')
-plt.title("Exercise 9 - Custom Pie Chart with Shadow")
+plt.pie(sizes, labels=labels, colors=colors, shadow=True, startangle=90, autopct='%1.1f%%', explode=explode)
+plt.title("Alternative Custom Pie Chart with Shadow and Exploded Segments")
 plt.show()
