@@ -38,10 +38,12 @@ def main():
     
     parser.add_argument("num1", type=float, help="The first number")
     parser.add_argument("num2", type=float, help="The second number")
-    parser.add_argument("symbol",  type=str, choices=['+', '-', '*', '/', 'm'], 
+    parser.add_argument("--symbol",  type=str, choices=['+', '-', '*', '/', 'm'], 
                         help="The operation symbol (+, -, *, /, m) for the second part of the task")
     
     args = parser.parse_args()
+
+
 
     if args.symbol:
         # Part 2: Compute based on symbol

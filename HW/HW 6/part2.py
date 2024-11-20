@@ -18,7 +18,7 @@ def create_list_html():
         return
 
     # Define colors for list items
-    colors = ["red", "blue", "green", "purple", "brown", "orange", "pink", "cyan", "lime", "magenta"]
+    colors = ["purple", "blue", "green","brown" , "red", "lime", "orange", "pink", "cyan",  "magenta"]
 
     # Create HTML content
     html_content = """
@@ -27,9 +27,7 @@ def create_list_html():
     <head>
         <title>HTML Lists</title>
     </head>
-    <body style="background-color: lightgray;">
-        <h1>Ordered and Unordered Lists</h1>
-        <h2>Ordered List</h2>
+    <body style="background-color: black;">
         <ol>
     """
     for email, color in zip(emails, colors * (len(emails) // len(colors) + 1)):
@@ -37,7 +35,6 @@ def create_list_html():
 
     html_content += """
         </ol>
-        <h2>Unordered List</h2>
         <ul>
     """
     for name, color in zip(names, colors * (len(names) // len(colors) + 1)):
@@ -69,7 +66,7 @@ def create_table_html():
     <head>
         <title>HTML Table</title>
     </head>
-    <body style="background-color: lightblue;">
+    <body style="background-color: white;">
         <h1>Table of Names and Ages</h1>
         <table border="1" style="width:50%; text-align:center; border-collapse:collapse;">
             <tr>
