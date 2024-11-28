@@ -1,6 +1,4 @@
 %{
- 
- 
 #undef yywrap
 #define yywrap() 1
   #define YY_INPUT(buf,result,max_size) \
@@ -11,17 +9,10 @@
  
 %}
 %%
- 
- 
-[\n] {
- printf("Hello World\n"); 
-}
- 
- 
+[aeiouAEIOU]    printf("Vowel: %s\n", yytext);
+.               printf("Not a vowel: %s\n", yytext);
 %%
- 
- 
-int main()
-{
- yylex(); //calling the rules section
+int main(void) {
+    yylex();  // Run the lexer
+    return 0;
 }
