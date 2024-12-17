@@ -1,0 +1,2 @@
+The sum is: 484
+The multiplication is: 57113102592000000
