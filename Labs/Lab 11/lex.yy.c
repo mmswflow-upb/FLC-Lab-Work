@@ -289,8 +289,8 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 #define YY_END_OF_BUFFER 12
 static yyconst short int yy_accept[17] =
     {   0,
-        0,    0,   12,   11,    1,    3,    9,   10,    4,    5,
-        7,    2,    8,    6,    2,    0
+        0,    0,   12,   11,    1,    3,    9,   10,    6,    4,
+        5,    7,    2,    8,    2,    0
     } ;
 
 static yyconst int yy_ec[256] =
@@ -299,15 +299,15 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
-        5,    1,    6,    1,    7,    1,    8,    9,    9,    9,
-        9,    9,    9,    9,    9,    9,    9,    1,    1,    1,
+        5,    6,    7,    1,    8,    1,    9,   10,   10,   10,
+       10,   10,   10,   10,   10,   10,   10,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,   10,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,   11,    1,    1,    1,    1,    1,    1,
 
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,   11,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -334,7 +334,7 @@ static yyconst int yy_meta[12] =
 static yyconst short int yy_base[17] =
     {   0,
         0,    0,   14,   15,   15,   15,   15,   15,   15,   15,
-       15,    4,   15,   15,    3,   15
+       15,   15,    3,   15,    2,   15
     } ;
 
 static yyconst short int yy_def[17] =
@@ -353,7 +353,7 @@ static yyconst short int yy_nxt[27] =
 static yyconst short int yy_chk[27] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,   15,   12,    3,   16,   16,   16,   16,   16,   16,
+        1,   15,   13,    3,   16,   16,   16,   16,   16,   16,
        16,   16,   16,   16,   16,   16
     } ;
 
@@ -368,9 +368,9 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 ".\\calculator.l"
+#line 1 "calculator.l"
 #define INITIAL 0
-#line 4 ".\\calculator.l"
+#line 4 "calculator.l"
 #include <stdio.h>
 #include <math.h>
 
@@ -529,7 +529,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 13 ".\\calculator.l"
+#line 13 "calculator.l"
 
 
 #line 536 "lex.yy.c"
@@ -617,57 +617,57 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 15 ".\\calculator.l"
+#line 15 "calculator.l"
 ; // Ignore whitespace
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 16 ".\\calculator.l"
+#line 16 "calculator.l"
 { yylval.ival = atoi(yytext); return T_INT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 ".\\calculator.l"
+#line 17 "calculator.l"
 { return T_NEWLINE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 18 ".\\calculator.l"
+#line 18 "calculator.l"
 { return T_PLUS; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 19 ".\\calculator.l"
+#line 19 "calculator.l"
 { return T_MINUS; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 ".\\calculator.l"
+#line 20 "calculator.l"
 { return T_MULT; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 ".\\calculator.l"
+#line 21 "calculator.l"
 { return T_DIV; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 ".\\calculator.l"
+#line 22 "calculator.l"
 { return T_POW; }    // New token for exponentiation
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 ".\\calculator.l"
+#line 23 "calculator.l"
 { return T_LPAREN; } // New token for left parenthesis
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 ".\\calculator.l"
+#line 24 "calculator.l"
 { return T_RPAREN; } // New token for right parenthesis
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 ".\\calculator.l"
+#line 25 "calculator.l"
 ECHO;
 	YY_BREAK
 #line 674 "lex.yy.c"
@@ -1556,6 +1556,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 25 ".\\calculator.l"
+#line 25 "calculator.l"
 
 
