@@ -30,10 +30,8 @@ def dfa_simulation(input_string):
     return current_state in accepting_states
 
 def draw_dfa():
-    # Create a directed graph
     dfa = nx.DiGraph()
 
-    # Define the DFA nodes and edges
     states = ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6']
     edges = [
         ('q0', 'q1', '0'), ('q0', 'q2', '1'),
@@ -42,16 +40,14 @@ def draw_dfa():
         ('q3', 'q5', '0'), ('q3', 'q3', '1'),
         ('q4', 'q5', '0'), ('q4', 'q6', '1'),
         ('q5', 'q5', '0'), ('q5', 'q6', '1'),
-        ('q6', 'q6', '0'), ('q6', 'q6', '1'),
+         ('q6', 'q6', '0,1'),
     ]
 
-    # Add nodes and edges to the graph
     for state in states:
         dfa.add_node(state, shape='circle')
     for edge in edges:
         dfa.add_edge(edge[0], edge[1], label=edge[2])
 
-    # Draw the DFA
     pos = nx.spring_layout(dfa)
     nx.draw(dfa, pos, with_labels=True, node_size=3000, node_color='lightblue')
     edge_labels = nx.get_edge_attributes(dfa, 'label')
@@ -59,7 +55,6 @@ def draw_dfa():
     plt.title("DFA Diagram")
     plt.show()
 
-# Example usage
 if __name__ == "__main__":
     input_string = "1001011"
     if dfa_simulation(input_string):
