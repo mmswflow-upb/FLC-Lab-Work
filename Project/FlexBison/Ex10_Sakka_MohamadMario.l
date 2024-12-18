@@ -11,7 +11,7 @@
 [0-9]+      { printf("Number: %s\n", yytext); }
 [a-zA-Z]+   { printf("Word: %s\n", yytext); }
 .           { printf("Other: %s\n", yytext); }
-\n          { /* Ignore newlines */ }
+\n          { }
 
 %%
 

@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-float result = 0.0;  // Stores the result of calculations
-int operation_done = 0; // Flag to check if calculation has occurred
+float result = 0.0;       
+char pending_op = 0;      
+int operation_done = 0;   
 
-void calculate(float num1, char op, float num2);
+void apply_operator(float num);
 %}
 
 %option noyywrap
@@ -14,37 +15,45 @@ void calculate(float num1, char op, float num2);
 %%
 
 [0-9]*\.[0-9]+|[0-9]+(\.[0-9]*)? {
-    result = atof(yytext); // Convert the matched float number
+    float num = atof(yytext);  
+    if (pending_op) {
+        apply_operator(num);  
+    } else {
+        result = num;         
+    }
     operation_done = 1;
 }
 
-\+|\/|\*|\- {
-    char op = yytext[0]; // Capture operator
-    float num;
-    scanf("%f", &num);   // Read the next number
-    calculate(result, op, num);
+[\+\-x\/] {
+    pending_op = yytext[0];    
+    if (pending_op == 'x') pending_op = '*';
 }
 
-sqrt[ \t]*\([0-9]*\.[0-9]+|[0-9]+(\.[0-9]*)?\) {
+sqrt[ \t]*\(([0-9]*\.[0-9]+|[0-9]+(\.[0-9]*)?)\) {
     float num;
-    sscanf(yytext, "sqrt(%f)", &num);
-    if (num < 0) {
-        printf("Error: Cannot calculate square root of a negative number.\n");
+    if (sscanf(yytext, "sqrt(%f)", &num) == 1) {
+        if (num < 0) {
+            printf("Error: Cannot calculate square root of a negative number.\n");
+        } else {
+            result = sqrt(num);
+            pending_op = 0; 
+            operation_done = 1;
+        }
     } else {
-        result = sqrt(num);
-        operation_done = 1;
+        printf("Error: Invalid sqrt syntax.\n");
     }
 }
 
 \n {
     if (operation_done) {
         printf("Result: %.2f\n", result);
-        result = 0.0; // Reset result for new input
-        operation_done = 0; // Reset flag
+        result = 0.0;        
+        pending_op = 0;      
+        operation_done = 0;  
     }
 }
 
-[ \t]+ { /* Ignore whitespace */ }
+[ \t]+ {  }
 
 . {
     printf("Invalid input: %s\n", yytext);
@@ -52,24 +61,27 @@ sqrt[ \t]*\([0-9]*\.[0-9]+|[0-9]+(\.[0-9]*)?\) {
 
 %%
 
-void calculate(float num1, char op, float num2) {
-    switch (op) {
-        case '+': result = num1 + num2; break;
-        case '-': result = num1 - num2; break;
-        case '*': result = num1 * num2; break;
+void apply_operator(float num) {
+    switch (pending_op) {
+        case '+': result += num; break;
+        case '-': result -= num; break;
+        case '*': result *= num; break;
         case '/':
-            if (num2 == 0) {
+            if (num == 0) {
                 printf("Error: Division by zero is not allowed.\n");
                 result = 0.0;
-                return;
+            } else {
+                result /= num;
             }
-            result = num1 / num2; break;
+            break;
+        default:
+            printf("Error: Unknown operator '%c'.\n", pending_op);
     }
-    operation_done = 1;
+    pending_op = 0;  
 }
 
 int main(void) {
-    printf("Enter calculations (e.g., 3.2 + 2.1, sqrt(16)):\n");
-    yylex(); // Start the lexer
+    printf("Enter calculations (e.g., 3.0 + 5.0 - 1.0, sqrt(16)):\n");
+    yylex(); 
     return 0;
 }

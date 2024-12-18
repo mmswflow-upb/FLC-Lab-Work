@@ -1,10 +1,10 @@
 %{
 #include <stdio.h>
 
-int capital_letter_count = 0;  // Counter for capital letters (A-Z)
-int whitespace_count = 0;      // Counter for spaces
-int newline_count = 0;         // Counter for newlines
-int tab_count = 0;             // Counter for tabs
+int capital_letter_count = 0;  
+int whitespace_count = 0;     
+int newline_count = 0;         
+int tab_count = 0;             
 
 #undef yywrap
 #define yywrap() 1
@@ -12,11 +12,11 @@ int tab_count = 0;             // Counter for tabs
 
 %%
 
-[A-Z]       { capital_letter_count++; }   // Match capital letters
-[ ]         { whitespace_count++; }       // Match a space
-\n          { newline_count++; }          // Match a newline
-\t          { tab_count++; }              // Match a tab
-.           { /* Match any other character (ignored) */ }
+[A-Z]       { capital_letter_count++; }   
+[ ]         { whitespace_count++; }      
+\n          { newline_count++; }          
+\t          { tab_count++; }              
+.           {  }
 
 %%
 
@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    yyin = file;  // Set input stream to the file
-    yylex();      // Start the lexer
+    yyin = file; 
+    yylex();     
 
     fclose(file);
 
