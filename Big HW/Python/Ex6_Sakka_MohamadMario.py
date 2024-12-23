@@ -3,39 +3,32 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 
-def scrape_all_pages_table_data(base_url, max_pages=24):
+def scrape_table_data(base_url):
     all_rows = []  
     headers = None  
     
-    for page in range(1, max_pages + 1):
-        print(f"Scraping page {page}...")
-        url = f"{base_url}?page_num={page}"
-        
-        response = requests.get(url)
-        if response.status_code != 200:
-            print(f"Failed to fetch page {page}. Status code: {response.status_code}")
-            continue
-        
-        soup = BeautifulSoup(response.content, "html.parser")
-        
-        table = soup.find("table", {"class": "table"})
-        if not table:
-            print(f"No table found on page {page}. Stopping.")
-            break
-        
-        if headers is None:
-            header_row = table.find("tr")
-            headers = [th.text.strip() for th in header_row.find_all("th")]
-            if not headers:
-                raise ValueError("Table headers not found.")
-
-        for tr in table.find_all("tr", {"class": "team"}):
-            cells = [td.text.strip() for td in tr.find_all("td")]
-            if cells:  
-                all_rows.append(cells)
+    response = requests.get(base_url)
+    if response.status_code != 200:
+        print(f"Failed to fetch page {page}. Status code: {response.status_code}")
     
-    if not all_rows:
-        raise ValueError("No data found across all pages.")
+    soup = BeautifulSoup(response.content, "html.parser")
+    
+    table = soup.find("table", {"class": "table"})
+    if not table:
+        print(f"No table found on page {page}. Stopping.")
+    
+    if headers is None:
+        header_row = table.find("tr")
+        headers = [th.text.strip() for th in header_row.find_all("th")]
+        if not headers:
+            raise ValueError("Table headers not found.")
+
+    for tr in table.find_all("tr", {"class": "team"}):
+        cells = [td.text.strip() for td in tr.find_all("td")]
+        if cells:  
+            all_rows.append(cells)
+    
+    
     
     df = pd.DataFrame(all_rows, columns=headers)
     return df
@@ -46,9 +39,31 @@ def export_data(df):
     print("Data exported to 'teams_data.csv' and 'teams_data.xlsx'.")
 
 def filter_by_city(df):
-    df["City"] = df["Team Name"].apply(lambda name: " ".join(name.split()[:2]))  
-    grouped = df.groupby("City")["Team Name"].apply(list)
-    print("Teams from the same city:\n", grouped)
+    """
+    Filters teams by city based on the length of the team name.
+    If the team name has three words or more, the city name should have two words.
+    If the team name has two words, the city is the first word of the team name.
+    Ensures no duplicate teams are listed.
+    """
+    def extract_city(team_name):
+        words = team_name.split()
+        if len(words) >= 3:
+            # If team name has 3 or more words, the city name is the first two words
+            return " ".join(words[:2])
+        elif len(words) == 2:
+            # If team name has 2 words, the city name is the first word
+            return words[0]
+        return None  # Handle cases with less than 2 words if necessary
+
+    # Add a "City" column based on the rules
+    df["City"] = df["Team Name"].apply(extract_city)
+    
+    # Group by city, remove duplicates, and list teams
+    grouped = df.groupby("City")["Team Name"].apply(lambda teams: list(set(teams)))
+    
+    print("\nTeams from the same city:\n", grouped)
+
+
 
 def sort_by_wins(df):
     df["Wins"] = pd.to_numeric(df["Wins"], errors="coerce")
@@ -102,7 +117,7 @@ if __name__ == "__main__":
 
     max_pages = extract_pagination(BeautifulSoup(requests.get(url).content, "html.parser"))
 
-    df = scrape_all_pages_table_data(url, max_pages)
+    df = scrape_table_data(url)
     print("Data scraped successfully.")
     
     export_data(df)
