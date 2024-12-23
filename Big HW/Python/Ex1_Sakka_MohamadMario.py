@@ -1,16 +1,17 @@
 import re
 
-def to_snake_case(input_string):
-    snake_case_string = re.sub(r'\s+', '_', input_string.strip()).lower()
-    return snake_case_string
+def to_snake_case(text):
+    text = re.sub(r'\s+', '_', text)  
+    snake_case = re.sub(r'(?<!_)([A-Z])', r'_\1', text)  
+    return snake_case.strip('_').lower()  
 
 examples = [
-    "Hello JavaScript",
-    "Convert This String To Snake Case",
+    "Hello NewWorld",
+    "Convert this String To Snake Case",
     "Python Program Example",
-    "Make Sure To Test It"
+    "SnakeCase Example For Testing"
 ]
 
-for i, example in enumerate(examples, 1):
-    result = to_snake_case(example)
-    print(f"Example {i}: {example} -> {result}")
+for example in examples:
+    print(f"Original: {example}")
+    print(f"Snake Case: {to_snake_case(example)}\n")
