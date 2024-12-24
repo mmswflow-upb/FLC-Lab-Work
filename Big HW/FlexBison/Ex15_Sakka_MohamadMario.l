@@ -14,8 +14,8 @@
 %%
 
 [ \t]                ; // Ignore whitespace
-[0-9]+\.[0-9]+       { yylval.fval = atof(yytext); return T_FLOAT; } // Match floats
-[0-9]+               { yylval.fval = atof(yytext); return T_FLOAT; } // Match integers as floats
+-?[0-9]+\.[0-9]+       { yylval.fval = atof(yytext); return T_FLOAT; } // Match floats
+-?[0-9]+                 { yylval.fval = atof(yytext); return T_FLOAT; } // Match integers as floats
 \n                   { return T_NEWLINE; }
 "+"                  { return T_PLUS; }
 "-"                  { return T_MINUS; }

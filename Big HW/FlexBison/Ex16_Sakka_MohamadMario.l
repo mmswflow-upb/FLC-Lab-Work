@@ -14,8 +14,8 @@
 %%
 
 [ \t]                ; 
-[0-9]+\.[0-9]+       { yylval.fval = atof(yytext); return T_FLOAT; }
-[0-9]+               { yylval.fval = atof(yytext); return T_FLOAT; } 
+-?[0-9]+\.[0-9]+     { yylval.fval = atof(yytext); return T_FLOAT; } // Detects negative floats
+-?[0-9]+             { yylval.fval = atof(yytext); return T_FLOAT; } // Detects negative integers
 "!"                  { return T_FACTORIAL; }
 "sin"                { return T_SIN; }
 "cos"                { return T_COS; }
