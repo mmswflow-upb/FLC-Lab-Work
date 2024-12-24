@@ -9,13 +9,13 @@ def scrape_table_data(base_url):
     
     response = requests.get(base_url)
     if response.status_code != 200:
-        print(f"Failed to fetch page {page}. Status code: {response.status_code}")
+        print(f"Failed to fetch page. Status code: {response.status_code}")
     
     soup = BeautifulSoup(response.content, "html.parser")
     
     table = soup.find("table", {"class": "table"})
     if not table:
-        print(f"No table found on page {page}. Stopping.")
+        print(f"No table found on page. Stopping.")
     
     if headers is None:
         header_row = table.find("tr")
@@ -39,26 +39,19 @@ def export_data(df):
     print("Data exported to 'teams_data.csv' and 'teams_data.xlsx'.")
 
 def filter_by_city(df):
-    """
-    Filters teams by city based on the length of the team name.
-    If the team name has three words or more, the city name should have two words.
-    If the team name has two words, the city is the first word of the team name.
-    Ensures no duplicate teams are listed.
-    """
+   
     def extract_city(team_name):
         words = team_name.split()
         if len(words) >= 3:
-            # If team name has 3 or more words, the city name is the first two words
+           
             return " ".join(words[:2])
         elif len(words) == 2:
-            # If team name has 2 words, the city name is the first word
+         
             return words[0]
-        return None  # Handle cases with less than 2 words if necessary
+        return None  
 
-    # Add a "City" column based on the rules
     df["City"] = df["Team Name"].apply(extract_city)
-    
-    # Group by city, remove duplicates, and list teams
+  
     grouped = df.groupby("City")["Team Name"].apply(lambda teams: list(set(teams)))
     
     print("\nTeams from the same city:\n", grouped)
