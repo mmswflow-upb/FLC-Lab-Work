@@ -1,3 +1,4 @@
+// Definitions Section
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,23 +9,24 @@ extern int yyparse();
 extern FILE* yyin;
 
 void yyerror(const char* s);
-
-double factorial(double n);
+float factorial(float n); // Function prototype for factorial
 %}
 
+// Rules Section
 %union {
-    float fval;
+    float fval; // Use float for calculations
 }
 
 %token<fval> T_FLOAT
-%token T_PLUS T_MINUS T_MULT T_DIV T_POW T_LPAREN T_RPAREN T_NEWLINE
-%token T_FACTORIAL T_SIN T_COS T_SQRT T_FABS T_SINH T_COSH
+%token T_PLUS T_MINUS T_MULT T_DIV T_POW T_FACTORIAL T_LPAREN T_RPAREN
+%token T_SIN T_COS T_SQRT T_FABS T_SINH T_COSH
+%token T_NEWLINE
 
 
 %left T_PLUS T_MINUS
 %left T_MULT T_DIV
-%right T_POW
-%nonassoc T_FACTORIAL 
+%right T_POW        
+%right T_FACTORIAL  
 %nonassoc T_LPAREN T_RPAREN
 
 %type<fval> expression
@@ -39,26 +41,26 @@ calculation:
 
 line:
       T_NEWLINE
-    | expression T_NEWLINE { printf("\tResult: %.6f\n", $1); }
+    | expression T_NEWLINE { printf("\tResult: %.5f\n", $1); }
 ;
 
 expression:
       T_FLOAT                      { $$ = $1; }
+    | T_MINUS expression %prec T_FACTORIAL { $$ = -$2; }
     | expression T_PLUS expression { $$ = $1 + $3; }
     | expression T_MINUS expression { $$ = $1 - $3; }
     | expression T_MULT expression { $$ = $1 * $3; }
     | expression T_DIV expression {
-          if ($3 == 0.0) {
+          if ($3 == 0) {
               yyerror("Division by zero");
           } else {
               $$ = $1 / $3;
           }
       }
-    | expression T_POW expression { $$ = pow($1, $3); }
-    | T_LPAREN expression T_RPAREN { $$ = $2; }
+    | expression T_POW expression { $$ = pow($1, $3); } 
     | expression T_FACTORIAL {
           if ($1 < 0 || (int)$1 != $1) {
-              yyerror("Factorial is only defined for non-negative integers.");
+              yyerror("Factorial is not defined for negative or floats");
           } else {
               $$ = factorial($1);
           }
@@ -67,25 +69,22 @@ expression:
     | T_COS T_LPAREN expression T_RPAREN { $$ = cos($3); }
     | T_SQRT T_LPAREN expression T_RPAREN {
           if ($3 < 0) {
-              yyerror("Square root of negative number is not allowed.");
+              yyerror("Square root is not defined for negative numbers");
           } else {
               $$ = sqrt($3);
           }
       }
-    | T_FABS T_LPAREN expression T_RPAREN { $$ = fabs($3); }
+    | T_FABS T_LPAREN expression T_RPAREN { $$ = fabs($3); } 
     | T_SINH T_LPAREN expression T_RPAREN { $$ = sinh($3); }
     | T_COSH T_LPAREN expression T_RPAREN { $$ = cosh($3); }
+    | T_LPAREN expression T_RPAREN { $$ = $2; }
 ;
 
 %%
 
-double factorial(double n) {
-    if (n == 0) return 1;
-    double result = 1.0;
-    for (int i = 1; i <= (int)n; ++i) {
-        result *= i;
-    }
-    return result;
+float factorial(float n) {
+    if (n == 0 || n == 1) return 1;
+    return n * factorial(n - 1);
 }
 
 int main() {
