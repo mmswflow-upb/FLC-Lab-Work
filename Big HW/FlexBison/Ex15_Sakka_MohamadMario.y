@@ -11,20 +11,19 @@ extern FILE* yyin;
 void yyerror(const char* s);
 %}
 
-// Rules Section
 %union {
-    float fval; // Use float for calculations
+    float fval;
 }
 
 %token<fval> T_FLOAT
 %token T_PLUS T_MINUS T_MULT T_DIV T_POW T_LPAREN T_RPAREN
 %token T_NEWLINE
 
-// Define operator precedence and associativity
+
 %left T_PLUS T_MINUS
 %left T_MULT T_DIV
-%right T_POW        // Exponentiation has higher precedence and right associativity
-%right T_UNARY_MINUS // Unary minus has precedence after exponentiation
+%right T_POW       
+%right T_UNARY_MINUS 
 %nonassoc T_LPAREN T_RPAREN
 
 %type<fval> expression
