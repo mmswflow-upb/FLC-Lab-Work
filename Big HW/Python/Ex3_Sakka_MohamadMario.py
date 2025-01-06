@@ -4,7 +4,6 @@ def find_and_save_urls(input_file, output_file):
     url_pattern = re.compile(r'\bhttps?://(?:[a-zA-Z0-9-]+\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:/\S*)?\b')
 
     try:
-        # Read the input file
         with open(input_file, 'r') as infile:
             content = infile.read()
 
@@ -20,7 +19,6 @@ def find_and_save_urls(input_file, output_file):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# Example usage
-input_file = "ex4_in.txt"
-output_file = "ex4_out.txt"
+input_file = "ex3_in.txt"
+output_file = "ex3_out.txt"
 find_and_save_urls(input_file, output_file)

@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 def dfa_simulation(input_string):
-    # Define the DFA transitions
     transitions = {
         'q0': {'0': 'q1', '1': 'q2'},
         'q1': {'0': 'q1', '1': 'q3'},
@@ -14,18 +13,15 @@ def dfa_simulation(input_string):
         'q6': {'0': 'q6', '1': 'q6'},
     }
 
-    # Define the accepting states
     accepting_states = {'q6'}
 
-    # Start at the initial state
     current_state = 'q0'
 
-    # Process the input string
     for char in input_string:
         if char in transitions[current_state]:
             current_state = transitions[current_state][char]
         else:
-            return False  # Invalid input leads to rejection
+            return False  
 
     return current_state in accepting_states
 

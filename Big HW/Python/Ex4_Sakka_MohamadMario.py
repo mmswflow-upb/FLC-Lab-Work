@@ -1,7 +1,6 @@
 import re
 
 def replace_capital_and_digits(input_file, output_file):
-    # Regular expression for words containing only capital letters and/or digits
     pattern = re.compile(r'\b[A-Z0-9]+\b')
 
     try:
@@ -9,10 +8,8 @@ def replace_capital_and_digits(input_file, output_file):
         with open(input_file, 'r') as infile:
             content = infile.read()
 
-        # Replace matching words with $
         replaced_content = pattern.sub('$', content)
 
-        # Save the modified content to the output file
         with open(output_file, 'w') as outfile:
             outfile.write(replaced_content)
 

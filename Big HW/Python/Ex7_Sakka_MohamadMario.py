@@ -6,15 +6,18 @@ def compute_sum_and_product(input_file, output_file, column_index):
         integers = []
         with open(input_file, 'r') as csv_file:
             reader = csv.reader(csv_file)
-            next(reader)  
             for row in reader:
                 try:
-                    integers.append(int(row[column_index]))
+                    value = int(row[column_index])
+                    integers.append(value)
                 except (ValueError, IndexError):
-                    print(f"Skipping invalid row: {row}")
+                    print(f"Skipping invalid or missing value in row: {row}")
+
+        if not integers:
+            print("No valid integers found in the specified column.")
+            return
 
         total_sum = sum(integers)
-        
         total_product = 1
         for num in integers:
             total_product *= num
