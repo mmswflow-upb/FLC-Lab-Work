@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Records</title>
+</head>
+<body>
+    <h1>All Records</h1>
+    <ul>
+        {% for record in holder %}
+            <li>
+                id: {{ record.id }} <br>
+                band_name: {{ record.band_name }} <br>
+                genre: {{ record.genre }} <br>
+                album: {{ record.album }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add Record</h2>
+    <form action="/postData" method="POST">
+        <input type="text" name="bandName" placeholder="Band Name" required>
+        <input type="text" name="genre" placeholder="Genre" required>
+        <input type="text" name="album" placeholder="Album" required>
+        <button type="submit">Add Record</button>
+    </form>
+
+    <h2>Update Record</h2>
+    <form action="/update" method="POST">
+        <input type="number" name="id" placeholder="Record ID" required>
+        <input type="text" name="bandName" placeholder="New Band Name">
+        <input type="text" name="genre" placeholder="New Genre">
+        <input type="text" name="album" placeholder="New Album">
+        <button type="submit">Update Record</button>
+    </form>
+
+    <h2>Delete Record</h2>
+    <form action="/deleteData" method="POST">
+        <input type="number" name="id" placeholder="Record ID" required>
+        <button type="submit">Delete Record</button>
+    </form>
+</body>
+</html>
